@@ -1,0 +1,1 @@
+This is a repository for Safia Read's first homework in ECON 470.
