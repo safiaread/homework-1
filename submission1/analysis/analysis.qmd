@@ -5,6 +5,8 @@ format: html
 
 [Link to Github](https://github.com/safiaread/homework-1)
 
+https://github.com/safiaread/homework-1
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
@@ -73,11 +75,13 @@ head(joined)
 # Premium Data
 
 6.
+I am still working on how to merge this data.
 ```{r}
 #
 ```
 
 7.
+I am still working on the graph for this data.
 ```{r}
 #
 ```
