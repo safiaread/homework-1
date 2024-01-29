@@ -65,22 +65,33 @@ Be sure to format your graph in a meaningful way.
 ```{r, echo = FALSE}
 service <- readRDS("/Users/safiaread/Desktop/homework_1/data/output/contract_service_area.rds")
 joined <- q4 %>%
-  inner_join(service, by=c("plan_type"))
+  inner_join(service, by=c("plan_type"))%>%
+  group_by(county, year) #%>%
+#summarise(average = mean())
+
 head(joined)
 
-#ggplot()
+#ggplot(aes(x = year, y = mean_enrollment, color = county))%>%
+#geom_point()
 ```
 
 # Premium Data
 
 6.
 ```{r}
-#
+premium <- readRDS("plan_premiums.rds")
+
+#joined_again <- joined %>%
+ # inner_join(premium, by=c("plan_type"))%>%
+#  group_by(county, year)
+
+#Need to figure out the common variables
 ```
 
 7.
 ```{r}
-#
+#ggplot(aes(x = year, y = percent))%>%
+#geom_point()
 ```
 
 # Summary Questions
