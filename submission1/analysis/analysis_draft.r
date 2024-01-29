@@ -41,7 +41,6 @@ pivot_wider(names_from = year, values_from = n)
 service <- readRDS("/Users/safiaread/Desktop/homework_1/data/output/contract_service_area.rds")
 head(service)
 
+head(q4)
 q4 %>%
-  inner_join(service %>% 
-               select(contractid, fips, year), 
-             by=c("contractid", "fips", "year"))
+  inner_join(service, by=c("contractid", "fips", "year"))

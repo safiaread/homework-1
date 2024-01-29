@@ -2,6 +2,7 @@
 ## Read in market pentration data */
 ##############################################################################
 
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata)
 
 #########################################################################
 ## Set local "month lists" to identify different files relevant for each year
