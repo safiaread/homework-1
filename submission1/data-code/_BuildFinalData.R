@@ -19,10 +19,7 @@ source("submission1/data-code/1_Plan_Data.R")
 source("submission1/data-code/2_Plan_Characteristics.R")
 source("submission1/data-code/3_Service_Areas.R")
 source("submission1/data-code/4_Penetration_Files.R")
-source("submission1/data-code/5_Star_Ratings.R")
-source("submission1/data-code/6_Risk_Rebates.R")
-source("submission1/data-code/7_MA_Benchmark.R")
-source("submission1/data-code/8_FFS_Costs.R")
+
 
 
 
