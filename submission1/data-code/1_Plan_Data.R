@@ -1,6 +1,8 @@
 #########################################################################
 ## Read in enrollment data for january of each year
 #########################################################################
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata)
 
 for (y in 2007:2015) {
   ## Basic contract/plan information
@@ -85,3 +87,5 @@ for (y in 2008:2015) {
 
 write_rds(full.ma.data,"data/output/full_ma_data.rds")
 sapply(paste0("ma_data_", 2007:2015, ".rds"), unlink)
+
+summary(full.ma.data)

@@ -2,6 +2,9 @@
 ## Read and clean data basic premium and deductible information
 #########################################################################  
 
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata)
+
 ## Raw 2007 data
 ma.path.2007=paste0("data/input/ma-plan-characteristics/2007 MA Landscape Source File 11-16-06.csv")
 ma.data.2007=read_csv(ma.path.2007,

@@ -2,7 +2,7 @@
 ## Read in service area data */
 ##############################################################################
 
-
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata)
 #########################################################################
 ## Set local "month lists" to identify different files relevant for each year
 ## Month lists differ by year just in case you work with data that are only available
