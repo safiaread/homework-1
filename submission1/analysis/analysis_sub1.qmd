@@ -77,96 +77,23 @@ service <- readRDS("/Users/safiaread/Desktop/homework_1/data/output/contract_ser
 joined <- data %>%
    left_join(service, by=c("contractid", "plan_type", "ssa", "fips", "county", "state", "year"))
 
-  #joined%>%
-  #group_by(county, year)%>%
-  #count()%>%
-  #na.omit()%>%
-  #pivot_wider(names_from = year, values_from = n)
-
-  avg_enroll <-  joined%>%
-  group_by(county, year)%>%
-  count()%>%
-  na.omit()%>%
-  subset(county != "")%>%
-  group_by(year)%>%
-  summarise(average = mean(n))
-
-ggplot(avg_enroll, aes(x = year, y=average))+
-geom_point()+
-geom_line()+
-scale_y_continuous(limits=c(0, 1400))
 ```
 
 # Premium Data
 
 6.
-Merge the plan characteristics data to the dataset you created in Step 5 above. Note that you’ll need to join the Market Penetration Data in order to get the information you need to merge the plan characteristics. This is because the plan characteristics data only have state name and county (not FIPS codes). The penetration files have both FIPS codes and state/county names, so that dataset serves as a good crosswalk file. Provide a graph showing the average premium over time. Don’t forget about formatting!
 
-I am still working on how to merge this data. I am specifically having trouble with the premium dataset.
-#```{r}
-premiums <- readRDS("data/output/plan_premiums.rds")
-penetration <- readRDS("data/output/ma_penetration.rds")
-head(penetration)
-head(premium)
-
-
-s_joined <- joined%>%
-subset(select = c(contractid, fips, ssa, year))
-
-new_joined <- s_joined%>%
-left_join(penetration, by = c("fips", "ssa", "year"))%>%
-left_join(premiums, by = c("contractid", "county", "state", "year"))
-
-head(new_joined)
-
-
-new_joined$premium
-#%>%
-#left_join(premium, by = c("contractid", "county", "state"))
-
-avg_premium <-  new_joined%>%
-subset(premium != "NA")%>%
-  group_by(year)%>%
-  summarise(average_premium = mean(premium))
-
-  ggplot(avg_premium, aes(x = year, y=average_premium))+
-geom_point()+
-geom_line()
-
-```
+I am still working on how to merge this data. 
 
 7.
-Provide a graph showing the percentage of $0 premium plans over time. Also…remember to format things. 
-
-I need the merged dataset from above to run this code but this is what I assume I need to do once it is merged.
-
-#```{r}
-zero <- new_joined%>%
-subset(premium == 0)%>%
-group_by(year)%>%
-count(zero_n)
-
-all <- ew_joined%>%
-group_by(year)%>%
-count(all_n)
-
-all%>%
-inner_join(zero, by = "year")%>%
-mutate(percent = zero_n/all_n)
-
-ggplot(aes(x= year, y = percent))+
-geom_point()+
-geom_line()
-
-# can use kable or stargazer to make tables look nice.
-```
+I am still working on how to merge this data. 
 
 # Summary Questions
 
 8.
 Why did we drop the “800-series” plans?
 
-800 series plans are offered directly to employers and unions.
+I couldn't find the variable with 800 series plans. Maybe they had a lot of NAs so we had to omit.
 
 9.
 Why do so many plans charge a $0 premium? What does that really mean to a beneficiary?
