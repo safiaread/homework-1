@@ -1,5 +1,5 @@
 ---
-title: "Analysis"
+title: "Homework One Analysis"
 format: html
 ---
 
@@ -13,7 +13,7 @@ library(tidyverse)
 library(ggplot2)
 ```
 
-```{r}
+```{r, echo = F}
 #load("Hwk1_workspace.Rdata")
 ```
 # Enrollment Data
@@ -21,7 +21,7 @@ library(ggplot2)
 1. How many observations exist in your current dataset?
 
 ```{r, echo=FALSE}
-data <- readRDS("data/output/full_ma_data.rds")
+data <- readRDS("/Users/safiaread/Desktop/homework_1/data/output/full_ma_data.rds")
 data <- data %>%
 subset(year > 2009)
 nrow(data)
@@ -137,6 +137,8 @@ geom_line()
 
 7.
 Provide a graph showing the percentage of $0 premium plans over time. Also…remember to format things. 
+
+I need the merged dataset from above to run this code but this is what I assume I need to do once it is merged.
 
 #```{r}
 zero <- new_joined%>%
