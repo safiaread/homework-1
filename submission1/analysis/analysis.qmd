@@ -1,0 +1,177 @@
+---
+title: "Analysis"
+format: html
+---
+
+[Link to Github](https://github.com/safiaread/homework-1)
+
+https://github.com/safiaread/homework-1
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+#load("Hwk1_workspace.Rdata")
+```
+# Enrollment Data
+
+1. How many observations exist in your current dataset?
+
+```{r, echo=FALSE}
+data <- readRDS("data/output/full_ma_data.rds")
+data <- data %>%
+subset(year > 2009)
+nrow(data)
+```
+
+2. 
+How many different plan_types exist in the data?
+```{r, echo = FALSE}
+#unique(data$plan_type)
+
+data%>%
+na.omit()%>%
+group_by(plan_type,year)%>%
+count()
+```
+
+3. Provide a table of the count of plans under each plan type in each year. 
+Your table should look something like Table 1.
+
+```{r, echo = FALSE}
+data %>%
+subset(select = c(plan_type, year))%>%
+group_by(plan_type, year)%>%
+count()%>%
+pivot_wider(names_from = year, values_from = n, names_prefix = "Count_")%>%
+na.omit()
+
+#dropped NA values
+```
+
+4.Remove all special needs plans (SNP), employer group plans (eghp), and all “800-series” plans. 
+Provide an updated version of Table 1 after making these exclusions.
+
+```{r, echo = FALSE}
+q4 <- data %>%
+subset(snp == "No" & eghp == "No" & planid < 800 | planid >= 900, select = c(plan_type, year))%>%
+group_by(plan_type, year)%>%
+count()%>%
+pivot_wider(names_from = year, values_from = n) %>%
+na.omit()
+
+q4
+```
+
+5. Merge the contract service area data to the enrollment data, and restrict the data only to contracts that are approved in their respective counties. 
+The R script to create the service area dataset is here: Contract Service Area. 
+And you can follow the _BuildFinalData.R script to see where/how I join the datasets. 
+Limiting your dataset only to plans with non-missing enrollment data, provide a graph showing the average number of Medicare Advantage enrollees per county from 2010 to 2015. 
+Be sure to format your graph in a meaningful way.
+
+```{r, echo = FALSE}
+service <- readRDS("/Users/safiaread/Desktop/homework_1/data/output/contract_service_area.rds")
+joined <- data %>%
+   left_join(service, by=c("contractid", "plan_type", "ssa", "fips", "county", "state", "year"))
+
+  #joined%>%
+  #group_by(county, year)%>%
+  #count()%>%
+  #na.omit()%>%
+  #pivot_wider(names_from = year, values_from = n)
+
+  avg_enroll <-  joined%>%
+  group_by(county, year)%>%
+  count()%>%
+  na.omit()%>%
+  subset(county != "")%>%
+  group_by(year)%>%
+  summarise(average = mean(n))
+
+ggplot(avg_enroll, aes(x = year, y=average))+
+geom_point()+
+geom_line()+
+scale_y_continuous(limits=c(0, 1400))
+```
+
+# Premium Data
+
+6.
+Merge the plan characteristics data to the dataset you created in Step 5 above. Note that you’ll need to join the Market Penetration Data in order to get the information you need to merge the plan characteristics. This is because the plan characteristics data only have state name and county (not FIPS codes). The penetration files have both FIPS codes and state/county names, so that dataset serves as a good crosswalk file. Provide a graph showing the average premium over time. Don’t forget about formatting!
+
+I am still working on how to merge this data. I am specifically having trouble with the premium dataset.
+#```{r}
+premiums <- readRDS("data/output/plan_premiums.rds")
+penetration <- readRDS("data/output/ma_penetration.rds")
+head(penetration)
+head(premium)
+
+
+s_joined <- joined%>%
+subset(select = c(contractid, fips, ssa, year))
+
+new_joined <- s_joined%>%
+left_join(penetration, by = c("fips", "ssa", "year"))%>%
+left_join(premiums, by = c("contractid", "county", "state", "year"))
+
+head(new_joined)
+
+
+new_joined$premium
+#%>%
+#left_join(premium, by = c("contractid", "county", "state"))
+
+avg_premium <-  new_joined%>%
+subset(premium != "NA")%>%
+  group_by(year)%>%
+  summarise(average_premium = mean(premium))
+
+  ggplot(avg_premium, aes(x = year, y=average_premium))+
+geom_point()+
+geom_line()
+
+```
+
+7.
+Provide a graph showing the percentage of $0 premium plans over time. Also…remember to format things. 
+
+#```{r}
+zero <- new_joined%>%
+subset(premium == 0)%>%
+group_by(year)%>%
+count(zero_n)
+
+all <- ew_joined%>%
+group_by(year)%>%
+count(all_n)
+
+all%>%
+inner_join(zero, by = "year")%>%
+mutate(percent = zero_n/all_n)
+
+ggplot(aes(x= year, y = percent))+
+geom_point()+
+geom_line()
+
+# can use kable or stargazer to make tables look nice.
+```
+
+# Summary Questions
+
+8.
+Why did we drop the “800-series” plans?
+
+800 series plans are offered directly to employers and unions.
+
+9.
+Why do so many plans charge a $0 premium? What does that really mean to a beneficiary?
+
+Maybe they charged $0 because they had really high deductibles. They also could have contracts with a small network of providers with high out of pocket costs.
+
+10.
+Briefly describe your experience working with these data (just a few sentences). Tell me one thing you learned and one thing that really aggravated you.
+
+With this data, it was definately an adjustment to manipulate it in VSCode. I have previously used RStudio, and I think you were right that this is a less intuitive interface. I had trouble figuring out how to view the data to get a grasp of how to manipulate it. I also have never worked with a dataset so large before, so it took some time to figure out how to upload it to my computer and organize everything so my computer would run. I'm having some trouble with the merging and the formating at the momment.
