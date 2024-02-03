@@ -171,7 +171,7 @@ Why did we drop the “800-series” plans?
 9.
 Why do so many plans charge a $0 premium? What does that really mean to a beneficiary?
 
-Maybe they charged $0 because they had really high deductibles. They also could have contracts with a small network of providers with high out of pocket costs.
+Maybe they charged $0 because they had really high deductibles. They also could have contracts with a small network of providers with high out of pocket costs. Traditional medicare has no network.
 
 10.
 Briefly describe your experience working with these data (just a few sentences). Tell me one thing you learned and one thing that really aggravated you.

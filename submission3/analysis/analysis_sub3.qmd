@@ -1,0 +1,131 @@
+---
+title: "Homework One Submission 3"
+author: "Safia Read"
+format:
+  pdf:
+    output-file: "read-s-hwk1-3"
+    output-ext:  "pdf"
+    header-includes:
+      - \usepackage{float}
+      - \floatplacement{table}{H}
+---
+
+This is my third submission of the first homework for Econ 470. 
+
+[Link to Github](https://github.com/safiaread/homework-1)
+
+https://github.com/safiaread/homework-1
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, fixest,
+               scales, gganimate, gapminder, gifski, png, tufte, plotly, OECD,
+               ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary,
+               kableExtra)
+```
+
+```{r, echo = F}
+load("/Users/safiaread/Desktop/homework_1/submission3/Hwk1_workspace.Rdata")
+```
+# Enrollment Data
+
+1. How many observations exist in your current dataset?
+
+By using the nrow() function, I found `r format(num_obvs, big.mark=",")` total observations in the full dataset. 
+
+2. 
+How many different plan_types exist in the data?
+By using the unique() function, I found `r format(num_plans, big.mark=",")` plans in the dataset, not including "NA". 
+
+3. Provide a table of the count of plans under each plan type in each year. 
+Your table should look something like Table 1.
+
+```{r} 
+#| echo: false
+#| label: tbl-plans
+#| tbl-cap: "Plan types by year"
+
+options(knitr.kable.NA = 0)
+knitr::kable(table_q3, 
+             col.names=c("Plan Type","2010","2011",
+                         "2012","2013","2014","2015"),
+             format.args=list(big.mark=","), booktabs = TRUE) %>%
+             kable_styling(latex_options=c("scale_down"))
+```
+
+
+4. Remove all special needs plans (SNP), employer group plans (eghp), and all “800-series” plans. 
+Provide an updated version of Table 1 after making these exclusions.
+
+```{r}
+#| echo: false
+#| label: tbl-plans2
+#| tbl-cap: Revised plan types by year
+
+options(knitr.kable.NA = 0)
+knitr::kable(table_q4, 
+             col.names=c("Plan Type","2010","2011",
+                         "2012","2013","2014","2015"),
+             format.args=list(big.mark=","), booktabs = TRUE) %>%
+             kable_styling(latex_options=c("scale_down"))
+``` 
+
+
+5. Merge the contract service area data to the enrollment data, and restrict the data only to contracts that are approved in their respective counties. 
+The R script to create the service area dataset is here: Contract Service Area. 
+And you can follow the _BuildFinalData.R script to see where/how I join the datasets. 
+Limiting your dataset only to plans with non-missing enrollment data, provide a graph showing the average number of Medicare Advantage enrollees per county from 2010 to 2015. 
+Be sure to format your graph in a meaningful way.
+
+```{r}
+#| echo: false
+#| label: fig-enroll
+#| fig-cap: "Average enrollment per county from 2010-2015."
+
+graph_enrollment
+```
+
+
+# Premium Data
+
+6.
+Merge the plan characteristics data to the dataset you created in Step 5 above. Note that you’ll need to join the Market Penetration Data in order to get the information you need to merge the plan characteristics. This is because the plan characteristics data only have state name and county (not FIPS codes). The penetration files have both FIPS codes and state/county names, so that dataset serves as a good crosswalk file. Provide a graph showing the average premium over time. Don’t forget about formatting!
+
+```{r}
+#| echo: false
+#| label: fig-premium
+#| fig-cap: "Average plan premium per county from 2010-2015."
+
+graph_premium
+```
+
+7.
+Provide a graph showing the percentage of $0 premium plans over time. Also…remember to format things. 
+
+I need the merged dataset from above to run this code but this is what I assume I need to do once it is merged.
+
+```{r}
+#| echo: false
+#| label: fig-zero-percent
+#| fig-cap: "Percentage of $0 premium plans over time from 2010-2015."
+
+graph_zero
+```
+
+# Summary Questions
+
+8.
+Why did we drop the “800-series” plans?
+
+800 series plans are offered directly to employers and unions, and so are not available to an average person. This means they are a special group of observations that aren't reflective of the average person's Medicare Advantage experience.
+
+9.
+Why do so many plans charge a $0 premium? What does that really mean to a beneficiary?
+
+The $0 monthly premium is in addition to a premium for Part B of Medicare Advantage, which all enrollees have to pay. Medicare Plan B charges premiums for an extended vareity of services, however the tradeoff is a small network of providers with high out of pocket costs. Traditional medicare has no network.
+
+10.
+Briefly describe your experience working with these data (just a few sentences). Tell me one thing you learned and one thing that really aggravated you.
+
+With this data, it was definately an adjustment to manipulate it in VSCode. I have previously used RStudio, and I think you were right that this is a less intuitive interface. I also have never worked with a dataset so large before, so it took some time to figure out how to upload it to my computer and organize everything so my computer would run. However, I think I learned a lot about Github and creating qmd files. The hardest part was my computer kept giving me an error where it said my LaTex was out of date and so it could not generate a pdf, however I reninstalled and updated LaTex but it still would not render.
